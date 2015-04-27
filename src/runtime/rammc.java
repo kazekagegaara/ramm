@@ -36,3 +36,13 @@ enum TokenType {
         this.pattern = pattern;
     }
 }
+
+class Token {
+    TokenType type;
+    String stringValue;
+
+    public Token(TokenType type, String token) {
+        this.type = type;
+        this.stringValue = token;
+    }
+}
