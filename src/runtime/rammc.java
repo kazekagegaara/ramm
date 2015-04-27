@@ -45,4 +45,21 @@ class Token {
         this.type = type;
         this.stringValue = token;
     }
+
+    public Tokens(String filename){
+        StringBuilder regex = new StringBuilder();
+        for (TokenType t: TokenType.values()) {
+            regex.append("|(?<").append(t.name()).append(">").append(t.pattern).append(")");
+        }                
+        pttrn = Pattern.compile(regex.substring(1));        
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = br.readLine()) != null) {                
+                // System.out.println(line); 
+                tokenize(line);            
+            }            
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
 }
