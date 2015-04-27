@@ -62,4 +62,17 @@ class Token {
             e.printStackTrace();
         }
     }
+	
+	private void tokenize(String line){
+        matcher = pttrn.matcher(line);
+        while (matcher.find()) {            
+            String tokenValue;
+            for (TokenType tokentype : TokenType.values()){
+                if ( (tokenValue = matcher.group(tokentype.name())) != null) {
+                    tokens.add(new Token(tokentype, tokenValue));
+                    break;
+                }
+            }
+        }
+    }
 }
