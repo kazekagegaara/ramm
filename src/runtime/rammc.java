@@ -38,6 +38,7 @@ enum TokenType {
 }
 
 class Token {
+    private List<Token> tokens = new ArrayList<Token>(); 
     TokenType type;
     String stringValue;
 
@@ -75,4 +76,8 @@ class Token {
             }
         }
     }
+
+    public List<Token> getTokens(){
+        return this.tokens;
+    }    
 }
