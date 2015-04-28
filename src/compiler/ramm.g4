@@ -19,6 +19,28 @@ block
  | forStatement
  | whileStatement
  ;
+Println  : 'println';
+Print    : 'print';
+Input    : 'input';
+Assert   : 'assert';
+Size     : 'size';
+Def      : 'def';
+If       : 'if';
+Else     : 'else';
+Return   : 'return';
+For      : 'for';
+While    : 'while';
+To       : 'to';
+Do       : 'do';
+End      : 'end';
+In       : 'in';
+Null     : 'null';
+
+
+Bool
+ : 'true' 
+ | 'false'
+ ;
 
 assignment
  : Identifier indexes? '=' expression
