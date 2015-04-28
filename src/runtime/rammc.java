@@ -38,7 +38,6 @@ enum TokenType {
 }
 
 class Token {
-    private List<Token> tokens = new ArrayList<Token>(); 
     TokenType type;
     String stringValue;
 
@@ -46,6 +45,13 @@ class Token {
         this.type = type;
         this.stringValue = token;
     }
+}
+
+class Tokens {
+
+    private List<Token> tokens = new ArrayList<Token>();    
+    private Pattern pttrn;
+    private Matcher matcher;
 
     public Tokens(String filename){
         StringBuilder regex = new StringBuilder();
@@ -189,11 +195,35 @@ class SymbolTable {
         this.init(tokens);
     }
 
-    private void init(List<Token> tokens){
-		
-		switch(t.type.toString()){
-		
-			case "IDENTIFIER":
+    private void init(List<Token> tokens){	        
+		int counter = 0;
+        symbolTableGlobal.push(symbolTable);
+        for(int i=0; i<tokens.size(); i++){
+            // Token t: tokens
+            Token t = tokens.get(i);
+            // System.out.println(t.type.toString());
+            // System.out.println(checkConditionFlag);            
+            if(ignoreBlockExecution){                                                                
+                if(tokens.get(counter).type.toString().equals("BLOCKEND")){
+                    ignoreBlockExecution = !ignoreBlockExecution;
+                }                
+                counter++;
+                continue;
+            }
+            switch(t.type.toString()){
+                case "PREDEFINEDIDENT":                       
+                    if(t.stringValue.equals("LOOP")){
+                        if(tokens.get(counter+1).type.toString().equals("PREDEFINEDIDENT")){
+                            // System.out.println("while loop");
+                            whileLoopFlag = true;
+                        } // else if(tokens.get(counter+1).toString().equals("IDENTIFIER")){
+                        //     System.out.println("for loop");
+                        // }
+                    } else {                        
+                        predefinedident(t.stringValue);
+                    }                                                     
+                    break;
+                case "IDENTIFIER":
                     stack.push(t.stringValue);                    
                     if(counter+1 < tokens.size()){
                         if(tokens.get(counter+1).type.toString().equals("COMMA")){                            
@@ -212,8 +242,75 @@ class SymbolTable {
                         }                            
                     }
                     break;
-			
-			case "NUMBER":
+                case "PROC":
+                    // System.out.println("Found proc");
+                    List<Token> newTokens = new ArrayList<Token>();   
+                    int procScope = 0;  
+                    String name = "";
+                    boolean startProcBody = false;                  
+                    for(int j = i; j<tokens.size(); j++){                                            
+                        // System.out.println(tokens.get(j).stringValue);
+                        if(j == i){
+                            name = tokens.get(j+1).stringValue;
+                        }
+                        if(tokens.get(j).stringValue.equals("{")){
+                            procScope++;                                                        
+                            startProcBody = true;
+                        }
+                        if(startProcBody){
+                            newTokens.add(tokens.get(j));
+                        }
+                        if(tokens.get(j).stringValue.equals("}")){
+                            procScope--;                        
+                            if(procScope == 0){
+                                startProcBody = false;
+                                // System.out.println("Proc completed");
+                                i = j;
+                                counter = j;
+                                break;                                
+                            }                            
+                        }
+                    }                    
+                    insert(name,new Symbol(newTokens,scope));   
+                    // SymbolTable st = new SymbolTable(newTokens);                    
+                    // System.out.println("Stack --> " + stack.toString());
+                    // System.out.println("Symbol Table --> " + symbolTable.toString());
+                    // System.out.println("Symbol Table Global --> " + symbolTableGlobal.toString());
+                    break;
+                case "PROCLOAD":
+                    String procName = "";
+                    List<Token> newTokensList = null;
+                    for(int j = i; j<tokens.size(); j++){
+                        // System.out.println(tokens.get(j).stringValue);
+                        if(j == i){
+                            procName = tokens.get(j+1).stringValue;
+                        }       
+                        if(j+1 < tokens.size()){
+                            if(!(tokens.get(j+1).type.toString().equals("IDENTIFIER") || tokens.get(j+1).type.toString().equals("COMMA") || tokens.get(j+1).type.toString().equals("NUMBER"))){
+                                i = j;
+                                counter = j;
+                                break;
+                            }
+                        }
+                        if(j == tokens.size()-1){
+                            i = j;
+                            counter = j;
+                            break;
+                        }                                                             
+                    }                    
+                    // System.out.println(procName);
+                    for(HashMap<String, Symbol> tempSymbolTable : symbolTableGlobal){
+                        Symbol findSymbol = tempSymbolTable.get(procName);                                    
+                        if(findSymbol != null){
+                            newTokensList = findSymbol.getSymbolValueList();                            
+                            break;
+                        }
+                    }                    
+                    // System.out.println(newTokensList.toString());
+                    SymbolTable st = new SymbolTable(newTokensList,symbolTable,symbolTableGlobal);
+                    stack.push(st.getReturnValue());
+                    break;
+                case "NUMBER":
                     stack.push(t.stringValue);
                     if(counter+1 < tokens.size()){
                         if(tokens.get(counter+1).type.toString().equals("COMMA")){
@@ -221,15 +318,125 @@ class SymbolTable {
                         }
                     }                    
                     break;
-            case "STRING":
+                case "STRING":
                     stack.push(t.stringValue);
                     if(counter+1 < tokens.size()){
                         if(tokens.get(counter+1).type.toString().equals("COMMA")){
                             parameterList.add(stack.pop());                            
                         }
                     }
-		
-		}
-		
+                    break;    
+                case "BLOCKSTART":
+                    if(whileLoopFlag){
+                        if(!whileLoopExecutionFlag){
+                            boolean foundLoopEnd = false;
+                            while(!foundLoopEnd){
+                                if(tokens.get(counter).stringValue.equals("}")){
+                                    foundLoopEnd = true;
+                                } else {
+                                    counter++;
+                                }
+                            }
+                        i = counter;
+                        }
+                    } 
+                    scope++;
+                    oldSymbolTableReference = symbolTable;
+                    symbolTable = new HashMap<String, Symbol>();
+                    symbolTableGlobal.push(symbolTable);                                                                                                                  
+                    // System.out.println("Symbol Table Global --> " + symbolTableGlobal.toString());
+                    // System.out.println("Symbol Table Global --> " + symbolTableGlobal.toString());
+                    break;
+                case "BLOCKEND":                    
+                    // System.out.println("Symbol Table Global --> " + symbolTableGlobal.toString());                                                      
+                    scope--;
+                    symbolTableGlobal.pop();
+                    symbolTable = oldSymbolTableReference;                    
+                    if(checkConditionFlag){
+                        checkConditionFlag = false;
+                    }
+                    if(whileLoopExecutionFlag){
+                        // System.out.println("execute again");
+                        boolean foundLoopStart = false;
+                        while(!foundLoopStart){
+                            if(tokens.get(counter).stringValue.equals("LOOP")){
+                                foundLoopStart = true;
+                            } else {
+                                counter--;
+                            }
+                        }
+                        i = counter;                                            
+                    } else {
+                        whileLoopFlag = false;
+                    }
+                    // System.out.println("Symbol Table Global --> " + symbolTableGlobal.toString());
+                    break;
+            }
+            // System.out.println(stack.size() + " " + stack.toString());    
+            // System.out.println("Stack --> " + stack.toString());
+            // System.out.println("Symbol Table --> " + symbolTable.toString());
+            // System.out.println("Symbol Table Global --> " + symbolTableGlobal.toString());
+            // System.out.println(printFlag);
+            if(setFlag && stack.size() >= 2 && !(compOpFlag || numericOpFlag)){                                                                  
+                doSetOperation();
+                setFlag = false;                
+            }
+            if(printFlag && stack.size() >= 1){                
+                printToConsole();                
+            } 
+            if(returnFlag && stack.size() >= 1){
+                setReturnValue();
+            }
+            if(checkConditionFlag){                                           
+                if(!compOpFlag){     
+                    if(stack.size() > 0){                        
+                        if(stack.peek().equals("TRUE") || stack.peek().equals("FALSE")){
+                            toExecuteCheckBlock = stack.pop();
+                            // System.out.println(toExecuteCheckBlock + " block to execute");
+                        }
+                    }                    
+                }
+                if(t.type.toString().equals("BOOLEAN")){
+                    if(t.stringValue.equals(toExecuteCheckBlock)){
+                        // System.out.println("execute this block"); 
+                        ignoreBlockExecution = false;
+                    } else {
+                        // System.out.println("Ignore this block");
+                        ignoreBlockExecution = true;
+                    }                    
+                }                                                                
+            } 
+            if(numericOpFlag){
+                if(counter+1 < tokens.size()){
+                    if(tokens.get(counter+1).type.toString().equals("PREDEFINEDIDENT") || tokens.get(counter+1).type.toString().equals("BLOCKEND") || tokens.get(counter+1).type.toString().equals("PROCLOAD")){
+                        // System.out.println("here" + tokens.get(counter+1).type.toString());
+                        doNumericOperation();
+                        numericOpFlag = false;
+                    }    
+                } else {
+                    doNumericOperation();
+                    numericOpFlag = false;
+                }                        
+            }                
+            if(compOpFlag){
+                if(counter+1 < tokens.size()){
+                    if(tokens.get(counter+1).type.toString().equals("PREDEFINEDIDENT") || tokens.get(counter+1).type.toString().equals("BOOLEAN") || tokens.get(counter+1).type.toString().equals("BLOCKSTART")){                        
+                        doCompOperation();
+                        numericOpFlag = false;
+                    }    
+                } else {
+                    doCompOperation();
+                    numericOpFlag = false;
+                }
+            }     
+            if(counter+1 < tokens.size()){
+                if(tokens.get(counter+1).stringValue.equals("PRINT")){
+                   printFlag2 = true;
+                } else {
+                    printFlag2 = false;
+                }
+            }            
+            counter++;                                      
+        }
     }
 }
