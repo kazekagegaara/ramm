@@ -87,6 +87,25 @@ class Symbol {
     private int symbolScope;        
     private List<Token> symbolValueList;
 
+    Symbol(String symbolValue, int symbolScope){                
+        this.symbolValue = symbolValue;
+        this.symbolScope = symbolScope;     
+    }
+
+    Symbol(List<Token> symbolValue,int symbolScope){
+        this.symbolValueList = symbolValue;
+        this.symbolScope = symbolScope; 
+    }
+
+    // Symbol(TokenType symbolType, int symbolScope){        
+    //     this.symbolType = symbolType;   
+    //     this.symbolScope = symbolScope;     
+    // }       
+    
+    // public void setSymbolValue(String symbolValue){
+    //     this.symbolValue = symbolValue;
+    // } 
+
     public String getSymbolValue(){
         return this.symbolValue;
     }
@@ -99,5 +118,4 @@ class Symbol {
         return this.symbolScope;
     }    
 
-    
 }
