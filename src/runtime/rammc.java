@@ -79,5 +79,25 @@ class Token {
 
     public List<Token> getTokens(){
         return this.tokens;
+    }  
+}
+
+class Symbol {        
+    private String symbolValue;
+    private int symbolScope;        
+    private List<Token> symbolValueList;
+
+    public String getSymbolValue(){
+        return this.symbolValue;
+    }
+
+    public List<Token> getSymbolValueList(){
+        return this.symbolValueList;
     }    
+
+    public int getScopeValue(){
+        return this.symbolScope;
+    }    
+
+    
 }
