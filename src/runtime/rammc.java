@@ -190,5 +190,46 @@ class SymbolTable {
     }
 
     private void init(List<Token> tokens){
+		
+		switch(t.type.toString()){
+		
+			case "IDENTIFIER":
+                    stack.push(t.stringValue);                    
+                    if(counter+1 < tokens.size()){
+                        if(tokens.get(counter+1).type.toString().equals("COMMA")){                            
+                            // if(scope != 0){                                                                
+                                String stackSymbol = stack.pop();
+                                for(HashMap<String, Symbol> tempSymbolTable : symbolTableGlobal){
+                                    Symbol findSymbol = tempSymbolTable.get(stackSymbol);                                    
+                                    if(findSymbol != null){
+                                        parameterList.add(findSymbol.getSymbolValue());
+                                        break;
+                                    }
+                                }
+                            // }else {                                
+                            //     parameterList.add(symbolTable.get(stack.pop()).getSymbolValue());  
+                            // }                            
+                        }                            
+                    }
+                    break;
+			
+			case "NUMBER":
+                    stack.push(t.stringValue);
+                    if(counter+1 < tokens.size()){
+                        if(tokens.get(counter+1).type.toString().equals("COMMA")){
+                            parameterList.add(stack.pop());                            
+                        }
+                    }                    
+                    break;
+            case "STRING":
+                    stack.push(t.stringValue);
+                    if(counter+1 < tokens.size()){
+                        if(tokens.get(counter+1).type.toString().equals("COMMA")){
+                            parameterList.add(stack.pop());                            
+                        }
+                    }
+		
+		}
+		
     }
 }
