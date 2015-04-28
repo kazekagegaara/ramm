@@ -124,3 +124,71 @@ class Symbol {
     }
 
 }
+
+// class SymbolEntry {
+//     private String name;
+//     private int scope;
+
+//     SymbolEntry(String name,int scope){
+//         this.name = name;
+//         this.scope = scope;
+//     }
+
+//     @Override
+//     public boolean equals(Object obj) {
+//         if(obj != null && obj instanceof SymbolEntry) {
+//             SymbolEntry s = (SymbolEntry)obj;
+//             return name.equals(s.name) && scope == s.scope;
+//         }
+//         return false;
+//     }
+
+//     @Override
+//     public int hashCode() {
+//         return (name + String.valueOf(scope)).hashCode();
+//     }
+// }
+
+class SymbolTable {
+
+    private HashMap<String, Symbol> symbolTable = new HashMap<String, Symbol>();  
+    private HashMap<String, Symbol> oldSymbolTableReference;
+    private LinkedList<HashMap<String, Symbol>> symbolTableGlobal = new LinkedList<HashMap<String,Symbol>>();
+    private Stack<String> stack = new Stack<String>(); 
+    private boolean setFlag = false; 
+    private boolean printFlag = false;
+    private boolean printFlag2 = false;
+    private boolean numericOpFlag = false;  
+    private boolean compOpFlag = false;
+    private boolean whileLoopFlag = false;
+    private boolean whileLoopExecutionFlag = false;
+    private boolean checkConditionFlag = false;
+    private boolean ignoreBlockExecution = false;
+    private boolean returnFlag = false;
+    private String toExecuteCheckBlock = "";    
+    private String toReturnValue = "";
+    private int numericOpCode = 0;    
+    private int compOpCode = 0;
+    private int scope = 0;    
+    private ArrayList<String> parameterList = new ArrayList<String>();
+
+    public SymbolTable(List<Token> tokens,HashMap<String, Symbol> symbolTableRef,LinkedList<HashMap<String, Symbol>> symbolTableGlobalRef){
+        this.symbolTableGlobal = symbolTableGlobalRef;
+        this.symbolTable = symbolTableRef;
+        this.init(tokens);
+        // this(symbolTableRef,symbolTableGlobalRef);
+        // this(tokens);
+    }
+
+    // public SymbolTable(HashMap<String, Symbol> symbolTableRef,LinkedList<HashMap<String, Symbol>> symbolTableGlobalRef){
+    //     this.symbolTableGlobal = symbolTableGlobalRef;
+    //     this.symbolTable = symbolTableRef;
+    // }
+
+    public SymbolTable(List<Token> tokens){
+        this.init(tokens);
+    }
+
+    private void init(List<Token> tokens){
+    }
+}
