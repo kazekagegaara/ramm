@@ -19,6 +19,9 @@ block
  | forStatement
  | whileStatement
  ;
+
+
+
 Println  : 'println';
 Print    : 'print';
 Input    : 'input';
@@ -35,6 +38,32 @@ Do       : 'do';
 End      : 'end';
 In       : 'in';
 Null     : 'null';
+Or       : '||';
+And      : '&&';
+Equals   : '==';
+NEquals  : '!=';
+GTEquals : '>=';
+LTEquals : '<=';
+Pow      : '^';
+Excl     : '!';
+GT       : '>';
+LT       : '<';
+Add      : '+';
+Subtract : '-';
+Multiply : '*';
+Divide   : '/';
+Modulus  : '%';
+OBrace   : '{';
+CBrace   : '}';
+OBracket : '[';
+CBracket : ']';
+OParen   : '(';
+CParen   : ')';
+SColon   : ';';
+Assign   : '=';
+Comma    : ',';
+QMark    : '?';
+Colon    : ':';
 
 
 Bool
