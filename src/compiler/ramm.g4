@@ -11,3 +11,15 @@ parse
 block
  : (statement | functionDecl)* expression?
  ;
+
+ statement
+ : assignment 
+ | functionCall 
+ | ifStatement
+ | forStatement
+ | whileStatement
+ ;
+
+assignment
+ : Identifier indexes? '=' expression
+ ;
