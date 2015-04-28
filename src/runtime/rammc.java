@@ -116,6 +116,11 @@ class Symbol {
 
     public int getScopeValue(){
         return this.symbolScope;
-    }    
+    }
+
+	@Override
+    public String toString() {
+        return "Scope : " + this.symbolScope + " -> Value : " + this.symbolValue + " | " + " -> Value : " + this.symbolValueList;
+    }
 
 }
