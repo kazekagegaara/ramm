@@ -158,9 +158,6 @@ Bool
  | 'false'
  ;
 
-assignment
- : Identifier indexes? '=' expression
- ;
 
 Number
  : Int ('.' Digit*)?
