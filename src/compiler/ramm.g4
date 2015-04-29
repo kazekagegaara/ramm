@@ -12,7 +12,7 @@ block
  : (statement | functionDecl)* expression?
  ;
 
- statement
+statement
  : assignment 
  | functionCall 
  | ifStatement
@@ -31,7 +31,6 @@ functionCall
  | Assert '(' expression ')'    #assertFunctionCall
  | Size '(' expression ')'      #sizeFunctionCall
  ;
-
 
 ifStatement
  : ifStat elseIfStat* elseStat? End
@@ -69,7 +68,7 @@ exprList
  : expression (',' expression)*
  ;
 
- expression
+expression
  : '-' expression                           #unaryMinusExpression
  | '!' expression                           #notExpression
  | expression '^' expression                #powerExpression
@@ -100,7 +99,6 @@ exprList
  | Input '(' String? ')'                    #inputExpression
  ;
 
-
 list
  : '[' exprList? ']'
  ;
@@ -125,6 +123,7 @@ Do       : 'do';
 End      : 'end';
 In       : 'in';
 Null     : 'null';
+
 Or       : '||';
 And      : '&&';
 Equals   : '==';
@@ -152,12 +151,10 @@ Comma    : ',';
 QMark    : '?';
 Colon    : ':';
 
-
 Bool
  : 'true' 
  | 'false'
  ;
-
 
 Number
  : Int ('.' Digit*)?
