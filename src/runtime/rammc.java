@@ -662,7 +662,19 @@ class SymbolTable {
                         stack.push("FALSE");
                 }
                 break;
-            
+            case 6:
+                if(isFloat){
+                    if(onef != twof)
+                        stack.push("TRUE");
+                    else
+                        stack.push("FALSE");
+                } else {
+                    if(!one.equals(two))
+                        stack.push("TRUE");
+                    else
+                        stack.push("FALSE");
+                }
+                break;
         }            
         compOpFlag = false;
         parameterList.clear();  
