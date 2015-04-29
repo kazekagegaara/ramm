@@ -1,0 +1,3 @@
+a=12		//modulus
+b=6
+print (a%b)    

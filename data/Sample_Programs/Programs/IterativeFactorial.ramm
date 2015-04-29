@@ -1,0 +1,11 @@
+def factorial (num)
+fact = num
+while num > 0 do
+fact = fact * (fact - 1)
+num = (num-1)
+end
+return fact
+end
+
+result = factorial (4)
+print (result)

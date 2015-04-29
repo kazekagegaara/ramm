@@ -1,0 +1,3 @@
+a=12         //subtract
+b=6
+print (a-b)

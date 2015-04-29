@@ -1,0 +1,3 @@
+a=12             //divide
+b=6
+print (a/b)    

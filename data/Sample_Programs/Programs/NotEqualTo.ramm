@@ -1,0 +1,3 @@
+if a!=b do   //not equal to
+print (a)
+end

@@ -1,0 +1,5 @@
+PROC helloworld a 
+{
+SET a "Hello World" 
+PRINT a 
+}

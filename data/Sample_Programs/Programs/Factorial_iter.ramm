@@ -1,0 +1,7 @@
+def FACTORIAL(number)
+	if number == 0 do
+		return 1
+	else do
+		return number*FACTORIAL(number-1)
+	end
+end

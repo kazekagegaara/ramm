@@ -1,0 +1,3 @@
+CHECK E a,b 
+TRUE {
+PRINT a }

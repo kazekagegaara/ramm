@@ -1,0 +1,6 @@
+num = 0
+while num<11 do
+num = num + 1
+end
+
+print (num)

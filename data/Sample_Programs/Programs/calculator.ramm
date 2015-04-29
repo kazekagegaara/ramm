@@ -1,0 +1,23 @@
+def add (a,b)
+return a+b
+end
+
+def subtract(a,b)
+return a-b
+end
+
+def multiply(a,b)
+return a*b
+end
+
+def divide(a,b)
+return a/b
+end
+
+a = 20
+b = 5
+
+print (add(a,b))
+print (subtract(a,b))
+print (multiply(a,b))
+print (divide(a,b))

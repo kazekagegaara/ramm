@@ -1,0 +1,7 @@
+PROC factorial num 
+{
+SET fact num LOOP GT num , 0 
+TRUE {
+SET fact MUL fact , SUB fact , 1 SET num SUB num , 1 }
+RETURN fact }
+SET result LOAD factorial 4 PRINT result 

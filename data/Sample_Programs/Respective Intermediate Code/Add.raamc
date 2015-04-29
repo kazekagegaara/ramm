@@ -1,0 +1,3 @@
+SET a 12 
+SET b 6 
+PRINT ADD a,b

@@ -1,0 +1,3 @@
+CHECK GT a,b 
+TRUE {
+PRINT a }

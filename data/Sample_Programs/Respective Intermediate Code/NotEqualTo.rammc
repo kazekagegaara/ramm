@@ -1,0 +1,3 @@
+CHECK NE a,b 
+TRUE {
+PRINT a }

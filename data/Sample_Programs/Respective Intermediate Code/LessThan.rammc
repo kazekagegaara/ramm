@@ -1,0 +1,3 @@
+CHECK LT a,b 
+TRUE {
+PRINT a }

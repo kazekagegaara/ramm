@@ -1,0 +1,13 @@
+PROC add a,b
+{
+RETURN ADD a , b }
+PROC subtract a,b
+{
+SUB RETURN a b }
+PROC multiply a,b
+{
+RETURN MUL a , b }
+PROC divide a,b
+{
+RETURN DIV a , b }
+SET a 20 SET b 5 PRINT LOAD add a b PRINT LOAD subtract a b PRINT LOAD multiply a b PRINT LOAD divide a b
