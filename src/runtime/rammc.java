@@ -571,5 +571,110 @@ class SymbolTable {
             }
         }            
     }
+	
+	private void doCompOperation(){                          
+        // System.out.println("Stack --> " + stack.toString());
+        // System.out.println("Symbol Table --> " + symbolTable.toString());
+        // System.out.println("Symbol Table Global --> " + symbolTableGlobal.toString());
+        String value = stack.pop();        
+        boolean symbolFound = false;                        
+        for(HashMap<String, Symbol> tempSymbolTable : symbolTableGlobal){                                
+            Symbol findSymbol = tempSymbolTable.get(value);                
+            if(findSymbol != null){
+                parameterList.add(findSymbol.getSymbolValue());
+                symbolFound = true;
+                break;        
+            }
+        }
+        if(!symbolFound){
+            parameterList.add(value);
+        }
+        // Symbol symbol = symbolTable.get(value);        
+        boolean isFloat = false;        
+        // if (symbol != null) {
+        //     parameterList.add(symbol.getSymbolValue());
+        // } else {
+        //     parameterList.add(value);
+        // }        
+        // System.out.println(parameterList.toString());
+        // System.out.println("Stack --> " + stack.toString());  
+        String one = parameterList.get(parameterList.size() - 2);
+        String two = parameterList.get(parameterList.size() - 1);
+        float onef = 0;
+        float twof = 0;        
+        if(isNumeric(one) && isNumeric(two))
+        {
+            onef = Float.parseFloat(one);
+            twof = Float.parseFloat(two);
+            isFloat = true;
+        }        
+        switch(compOpCode){
+            case 1: 
+                if(isFloat){
+                    if(onef < twof)
+                        stack.push("TRUE");
+                    else
+                        stack.push("FALSE");
+                } else {
+                    System.out.println("Incomparable types");
+                }
+                break;
+            case 2:
+                if(isFloat){
+                    if(onef > twof)
+                        stack.push("TRUE");
+                    else
+                        stack.push("FALSE");
+                } else {
+                    System.out.println("Incomparable types");
+                }
+                break;
+            case 3:
+                if(isFloat){
+                    if(onef >= twof)
+                        stack.push("TRUE");
+                    else
+                        stack.push("FALSE");
+                } else {
+                    System.out.println("Incomparable types");
+                }
+                break;
+            case 4:
+                if(isFloat){
+                    if(onef <= twof)
+                        stack.push("TRUE");
+                    else
+                        stack.push("FALSE");
+                } else {
+                    System.out.println("Incomparable types");
+                }
+                break;
+            case 5:
+                if(isFloat){
+                    if(onef == twof)
+                        stack.push("TRUE");
+                    else
+                        stack.push("FALSE");
+                } else {
+                    if(one.equals(two))
+                        stack.push("TRUE");
+                    else
+                        stack.push("FALSE");
+                }
+                break;
+            
+        }            
+        compOpFlag = false;
+        parameterList.clear();  
+        // System.out.println("Stack --> " + stack.toString());            
+        if(whileLoopFlag){
+            if(stack.pop().equals("TRUE")){
+                whileLoopExecutionFlag = true;
+            } else {
+                whileLoopExecutionFlag = false;
+                // whileLoopFlag = false;
+            }            
+        }     
+    }
 
 }
