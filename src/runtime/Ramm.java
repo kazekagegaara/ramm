@@ -3,22 +3,56 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Ramm Class is the triggering class for the Ramm VM. It contains the call to public static void main(String args[]).
+ * @author Aditya Narasimhamurthy
+ * @author Manit Singh Kalsi
+ * @author Mohit Kumar
+ * @author Richa Mittal
+ */
+
 public class Ramm {
+
+    /** 
+     *  It makes a call to the run method along with the filename read from the command line arguments
+     * 
+     * @param args          An array of String that contains the command line arguments
+     */
 
     public static void main(String args[]){                     
         run(args[0]);        
     }
+
+    /** 
+     *  It kicks off the VM for the given filename that contains intermediate code
+     * 
+     * @param filename          String value that holds the filename(intermediate code) to feed to the VM
+     */
 
     private static void run(String filename){
         RammVM st = new RammVM(new Tokens(filename).getTokens()); 
     }
 }
 
+/** 
+ * Tokens class generates tokens from a given file
+ * @author Aditya Narasimhamurthy
+ * @author Manit Singh Kalsi
+ * @author Mohit Kumar
+ * @author Richa Mittal
+ */
+
 class Tokens {
 
     private List<SingleToken> tokens = new ArrayList<SingleToken>();    
     private Pattern pttrn;
     private Matcher matcher;
+
+    /** 
+     *  The Tokens constructor builds up the pattern to be used for regex matching. It reads all tokentypes from the Token type enum and forms pattern. It thens read the input file line by line and tokenizes it.
+     * 
+     * @param filename          String value that holds the filename(intermediate code) to feed to the VM
+     */
 
     public Tokens(String filename){
         StringBuilder regex = new StringBuilder();
@@ -36,6 +70,12 @@ class Tokens {
         }
     }
 
+    /** 
+     *  This method takes in a line and add it to the tokens list after finding out what type of Token it is and associating the tokentype and tokenvalue.
+     * 
+     * @param line          String value that holds a line from the intermediate code that has to be tokenized
+     */
+
     private void tokenize(String line){
         matcher = pttrn.matcher(line);
         while (matcher.find()) {            
@@ -49,20 +89,49 @@ class Tokens {
         }
     }
 
+    /** 
+     *  Getter method for returning the generated tokens list
+     *      
+     * @return Tokens list
+     */
+
     public List<SingleToken> getTokens(){
         return this.tokens;
     }    
 }
 
+/** 
+ * This is the representation of each token, it contains tokentype and String value of token
+ * @author Aditya Narasimhamurthy
+ * @author Manit Singh Kalsi
+ * @author Mohit Kumar
+ * @author Richa Mittal
+ */
+
 class SingleToken {
     TokenType type;
     String stringValue;
+
+    /** 
+     *  The constructor assigns the token type and the string value of a given token
+     * 
+     * @param type          TokenType of the token
+     * @param token          String value of the token
+     */
 
     public SingleToken(TokenType type, String token) {
         this.type = type;
         this.stringValue = token;
     }
 }
+
+/** 
+ * This enum holds the regex patterns for various possible Token types for the intermediate code
+ * @author Aditya Narasimhamurthy
+ * @author Manit Singh Kalsi
+ * @author Mohit Kumar
+ * @author Richa Mittal
+ */
 
 enum TokenType {
     BLOCKSTART("\\{")                   , 
@@ -77,43 +146,103 @@ enum TokenType {
     IDENTIFIER ( "[a-z_][A-Za-z0-9]*")  ;
 
     public final String pattern;
+
+    /** 
+     *  The constructor assigns the token type regex pattern
+     * 
+     * @param pattern          Regex pattern for a particular token
+     */
     private TokenType(String pattern){
         this.pattern = pattern;
     }
 }
+
+/** 
+ * This is the representation of each Symbol on the Symbol Table
+ * @author Aditya Narasimhamurthy
+ * @author Manit Singh Kalsi
+ * @author Mohit Kumar
+ * @author Richa Mittal
+ */
 
 class Symbol {        
     private String symbolValue;
     private int symbolScope;        
     private List<SingleToken> symbolValueList;
 
+    /** 
+     *  This constructor assigns the Symbol a value and a scope
+     * 
+     * @param symbolValue          Symbol Value
+     * @param symbolScope          Symbol Scope
+     */
+
     Symbol(String symbolValue, int symbolScope){                
         this.symbolValue = symbolValue;
         this.symbolScope = symbolScope;     
     }
+
+    /** 
+     *  This constructor assigns the Symbol a value and a scope
+     * 
+     * @param symbolValue          Symbol Value
+     * @param symbolScope          Symbol Scope
+     */
 
     Symbol(List<SingleToken> symbolValue,int symbolScope){
         this.symbolValueList = symbolValue;
         this.symbolScope = symbolScope; 
     }
     
+    /** 
+     *  This is a getter method to get the symbol value
+     * 
+     * @return      Returns the symbol value as a String     
+     */
+
     public String getSymbolValue(){
         return this.symbolValue;
     }
+
+    /** 
+     *  This is a getter method to get the symbol value
+     * 
+     * @return      Returns the symbol value as a List     
+     */
 
     public List<SingleToken> getSymbolValueList(){
         return this.symbolValueList;
     }    
 
+    /** 
+     *  This is a getter method to get the symbol scope
+     * 
+     * @return      Returns the symbol scope as an int
+     */
+
     public int getScopeValue(){
         return this.symbolScope;
     }    
+
+    /** 
+     *  Intended only for debugging
+     * 
+     * @return      Returns the String representation of the Symbol
+     */    
 
     @Override
     public String toString() {
         return "Scope : " + this.symbolScope + " -> Value : " + this.symbolValue + " | " + " -> Value : " + this.symbolValueList;
     }
 }
+
+/** 
+ * This is the VM for the Ramm Intermdiate Code. It handles Symbol Table generation, calls stacks, expression evaluations, etc.
+ * @author Aditya Narasimhamurthy
+ * @author Manit Singh Kalsi
+ * @author Mohit Kumar
+ * @author Richa Mittal
+ */
 
 class RammVM {
 
@@ -138,15 +267,35 @@ class RammVM {
     private int scope = 0;    
     private ArrayList<String> parameterList = new ArrayList<String>();
 
+    /** 
+     *  The constructor is for tokens that are not in the global scope, it creates a new scope Symbol Table for these tokens
+     * 
+     * @param tokens                      tokens in the new block
+     * @param symbolTableRef              reference of the new symbol table
+     * @param symbolTableGlobalRef        reference of the global symbol table
+     */
+
     public RammVM(List<SingleToken> tokens,HashMap<String, Symbol> symbolTableRef,LinkedList<HashMap<String, Symbol>> symbolTableGlobalRef){
         this.symbolTableGlobal = symbolTableGlobalRef;
         this.symbolTable = symbolTableRef;
         this.init(tokens);
     }
 
+    /** 
+     *  The constructor is for tokens in the global scope
+     * 
+     * @param tokens                      tokens in the block     
+     */
+
     public RammVM(List<SingleToken> tokens){
         this.init(tokens);
     }
+
+    /** 
+     *  This method processes the tokens and generates Symbol table and does execution when needed
+     * 
+     * @param tokens    List of tokens to process
+     */
 
     private void init(List<SingleToken> tokens){
         int counter = 0;
@@ -377,13 +526,33 @@ class RammVM {
         }       
     }
 
+    /** 
+     *  This method inserts a symbol into the symbol table
+     * 
+     * @param symbolName    name of the symbol
+     * @param symbol        internal representation of the symbol
+     */
+
     private void insert(String symbolName, Symbol symbol){                    
         symbolTable.put(symbolName,symbol);
     }
 
+    /** 
+     *  This method inserts a symbol into the symbol table that is not a global symbol table
+     *
+     * @param scopedSymbolTable     reference of the symbol table to insert this symbol into
+     * @param symbolName            name of the symbol
+     * @param symbol                internal representation of the symbol
+     */
+
     private void insertScoped(HashMap<String, Symbol> scopedSymbolTable, String symbolName, Symbol symbol){
         scopedSymbolTable.put(symbolName,symbol);
     }
+
+    /** 
+     *  This method sets the return value of a function in a call stack
+     *     
+     */
 
     private void setReturnValue(){
         String toReturn = "";
@@ -404,9 +573,20 @@ class RammVM {
         returnFlag = false;
     }
 
+    /** 
+     *  This method returns the return value of a function in a call stack
+     *     
+     * @return      Returns the return value of any function on the call stack
+     */
+
     public String getReturnValue(){
         return toReturnValue;
     }
+
+    /** 
+     *  This method handles user input
+     *     
+     */
 
     private void inputReader(){
         String userInput;
@@ -418,6 +598,11 @@ class RammVM {
             System.out.println("IO error!");        
         }
     }
+
+    /** 
+     *  This method handles print operations
+     *     
+     */
 
     private void printToConsole(){     
         if(!numericOpFlag && !compOpFlag){            
@@ -440,6 +625,11 @@ class RammVM {
                 printFlag = false;
         }
     }
+
+    /** 
+     *  This method handles assignment operations
+     *     
+     */
 
     private void doSetOperation(){
         String value = stack.pop();
@@ -480,6 +670,11 @@ class RammVM {
             }
         }            
     }
+
+    /** 
+     *  This method handles numeric operations
+     *     
+     */
 
     private void doNumericOperation(){       
         float result = 0;
@@ -526,6 +721,11 @@ class RammVM {
         numericOpFlag = false;
         parameterList.clear();
     }
+
+    /** 
+     *  This method handles comparison operations
+     *     
+     */
 
     private void doCompOperation(){                          
         String value = stack.pop();        
@@ -631,6 +831,12 @@ class RammVM {
         }     
     }
 
+    /** 
+     *  This method checks if a given String is numeric or not
+     *     
+     * @return  Returns boolean value that tells if the String is numeric or not
+     */
+
     private static boolean isNumeric(String str)  
     {  
       try  
@@ -643,6 +849,12 @@ class RammVM {
       }  
       return true;  
     }
+
+    /** 
+     *  This method performs operations for all the predefined variables in the intermediate code
+     *     
+     * @param value         String value of the predefined variable
+     */
 
     private void predefinedident(String value){                
         switch(value){
