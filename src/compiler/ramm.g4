@@ -32,6 +32,43 @@ functionCall
  | Size '(' expression ')'      #sizeFunctionCall
  ;
 
+
+ifStatement
+ : ifStat elseIfStat* elseStat? End
+ ;
+
+ifStat
+ : If expression Do block
+ ;
+
+elseIfStat
+ : Else If expression Do block
+ ;
+
+elseStat
+ : Else Do block
+ ;
+
+functionDecl
+ : Def Identifier '(' idList? ')' block End
+ ;
+
+forStatement
+ : For Identifier '=' expression To expression Do block End
+ ;
+
+whileStatement
+ : While expression Do block End
+ ;
+
+idList
+ : Identifier (',' Identifier)*
+ ;
+
+exprList
+ : expression (',' expression)*
+ ;
+
  expression
  : '-' expression                           #unaryMinusExpression
  | '!' expression                           #notExpression
@@ -64,6 +101,13 @@ functionCall
  ;
 
 
+list
+ : '[' exprList? ']'
+ ;
+
+indexes
+ : ('[' expression ']')+
+ ;
 
 Println  : 'println';
 Print    : 'print';
