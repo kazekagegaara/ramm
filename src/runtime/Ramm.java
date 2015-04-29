@@ -3,20 +3,20 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ramm {
+public class Ramm {
 
     public static void main(String args[]){                     
         run(args[0]);        
     }
 
     private static void run(String filename){
-        SymbolTable st = new SymbolTable(new Tokens(filename).getTokens()); 
+        RammVM st = new RammVM(new Tokens(filename).getTokens()); 
     }
 }
 
 class Tokens {
 
-    private List<Token> tokens = new ArrayList<Token>();    
+    private List<SingleToken> tokens = new ArrayList<SingleToken>();    
     private Pattern pttrn;
     private Matcher matcher;
 
@@ -42,23 +42,23 @@ class Tokens {
             String tokenValue;
             for (TokenType tokentype : TokenType.values()){
                 if ( (tokenValue = matcher.group(tokentype.name())) != null) {
-                    tokens.add(new Token(tokentype, tokenValue));
+                    tokens.add(new SingleToken(tokentype, tokenValue));
                     break;
                 }
             }
         }
     }
 
-    public List<Token> getTokens(){
+    public List<SingleToken> getTokens(){
         return this.tokens;
     }    
 }
 
-class Token {
+class SingleToken {
     TokenType type;
     String stringValue;
 
-    public Token(TokenType type, String token) {
+    public SingleToken(TokenType type, String token) {
         this.type = type;
         this.stringValue = token;
     }
@@ -85,14 +85,14 @@ enum TokenType {
 class Symbol {        
     private String symbolValue;
     private int symbolScope;        
-    private List<Token> symbolValueList;
+    private List<SingleToken> symbolValueList;
 
     Symbol(String symbolValue, int symbolScope){                
         this.symbolValue = symbolValue;
         this.symbolScope = symbolScope;     
     }
 
-    Symbol(List<Token> symbolValue,int symbolScope){
+    Symbol(List<SingleToken> symbolValue,int symbolScope){
         this.symbolValueList = symbolValue;
         this.symbolScope = symbolScope; 
     }
@@ -101,7 +101,7 @@ class Symbol {
         return this.symbolValue;
     }
 
-    public List<Token> getSymbolValueList(){
+    public List<SingleToken> getSymbolValueList(){
         return this.symbolValueList;
     }    
 
@@ -115,7 +115,7 @@ class Symbol {
     }
 }
 
-class SymbolTable {
+class RammVM {
 
     private HashMap<String, Symbol> symbolTable = new HashMap<String, Symbol>();  
     private HashMap<String, Symbol> oldSymbolTableReference;
@@ -138,21 +138,21 @@ class SymbolTable {
     private int scope = 0;    
     private ArrayList<String> parameterList = new ArrayList<String>();
 
-    public SymbolTable(List<Token> tokens,HashMap<String, Symbol> symbolTableRef,LinkedList<HashMap<String, Symbol>> symbolTableGlobalRef){
+    public RammVM(List<SingleToken> tokens,HashMap<String, Symbol> symbolTableRef,LinkedList<HashMap<String, Symbol>> symbolTableGlobalRef){
         this.symbolTableGlobal = symbolTableGlobalRef;
         this.symbolTable = symbolTableRef;
         this.init(tokens);
     }
 
-    public SymbolTable(List<Token> tokens){
+    public RammVM(List<SingleToken> tokens){
         this.init(tokens);
     }
 
-    private void init(List<Token> tokens){
+    private void init(List<SingleToken> tokens){
         int counter = 0;
         symbolTableGlobal.push(symbolTable);
         for(int i=0; i<tokens.size(); i++){
-            Token t = tokens.get(i);
+            SingleToken t = tokens.get(i);
 
             if(ignoreBlockExecution){                                                                
                 if(tokens.get(counter).type.toString().equals("BLOCKEND")){
@@ -190,7 +190,7 @@ class SymbolTable {
                     break;
                 
 				case "PROC":
-                    List<Token> newTokens = new ArrayList<Token>();   
+                    List<SingleToken> newTokens = new ArrayList<SingleToken>();   
                     int procScope = 0;  
                     String name = "";
                     boolean startProcBody = false;                  
@@ -220,7 +220,7 @@ class SymbolTable {
                 
 				case "PROCLOAD":
                     String procName = "";
-                    List<Token> newTokensList = null;
+                    List<SingleToken> newTokensList = null;
                     for(int j = i; j<tokens.size(); j++){
                         if(j == i){
                             procName = tokens.get(j+1).stringValue;
@@ -246,7 +246,7 @@ class SymbolTable {
                             break;
                         }
                     }                    
-                    SymbolTable st = new SymbolTable(newTokensList,symbolTable,symbolTableGlobal);
+                    RammVM st = new RammVM(newTokensList,symbolTable,symbolTableGlobal);
                     stack.push(st.getReturnValue());
                     break;
 
