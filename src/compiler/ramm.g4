@@ -20,6 +20,17 @@ block
  | whileStatement
  ;
 
+assignment
+ : Identifier indexes? '=' expression
+ ;
+
+functionCall
+ : Identifier '(' exprList? ')' #identifierFunctionCall
+ | Println '(' expression? ')'  #printlnFunctionCall
+ | Print '(' expression ')'     #printFunctionCall
+ | Assert '(' expression ')'    #assertFunctionCall
+ | Size '(' expression ')'      #sizeFunctionCall
+ ;
 
 
 Println  : 'println';
