@@ -517,4 +517,59 @@ class SymbolTable {
     public String getReturnValue(){
         return toReturnValue;
     }
+	
+	private void doSetOperation(){
+        // System.out.println("Stack --> " + stack.toString());
+        // System.out.println("Symbol Table --> " + symbolTable.toString());            
+        String value = stack.pop();
+        String name = stack.pop();
+        // System.out.println(name + " " + value);
+        // start checking from global scope
+        if(scope != 0){
+            // System.out.println(scope);
+            boolean symbolFound = false;
+            for(HashMap<String, Symbol> tempSymbolTable : symbolTableGlobal){                
+                // System.out.println(tempSymbolTable.toString());
+                // System.out.println("Symbol Table Global --> " + symbolTableGlobal.toString());
+                Symbol findSymbol = tempSymbolTable.get(name);
+                // System.out.println(findSymbol);
+                if(findSymbol != null){
+                    insertScoped(tempSymbolTable,name,new Symbol(value,findSymbol.getScopeValue()));
+                    symbolFound = true;
+                    break;        
+                }
+            }
+            if(!symbolFound){
+                insert(name,new Symbol(value,scope));   
+            }
+        } else {
+            boolean symbolFound = false;
+            for(HashMap<String, Symbol> tempSymbolTable : symbolTableGlobal){                                
+                Symbol findSymbol = tempSymbolTable.get(name);                
+                if(findSymbol != null){
+                    insertScoped(tempSymbolTable,name,new Symbol(value,findSymbol.getScopeValue()));
+                    symbolFound = true;
+                    break;        
+                }
+            }
+            // Symbol symbol = symbolTable.get(name);                        
+            // if (symbol != null) {
+            //     // System.out.println("Scope of symbol -- >> " + symbol.getScopeValue());
+            //     // System.out.println("Current scope -- >> " + scope);
+            //     if(symbol.getScopeValue() == scope)
+            //         insert(name,new Symbol(value,scope));           
+            // } else {
+            if(!symbolFound){
+                if(parameterList.size() == 0){                
+                    insert(name,new Symbol(value,scope));
+                }
+                else {
+                    parameterList.add(value);                
+                    insert(name,new Symbol(parameterList.toString(),scope));
+                    parameterList.clear();
+                }
+            }
+        }            
+    }
+
 }
