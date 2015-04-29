@@ -377,7 +377,8 @@ class SymbolTable {
             // System.out.println("Symbol Table --> " + symbolTable.toString());
             // System.out.println("Symbol Table Global --> " + symbolTableGlobal.toString());
             // System.out.println(printFlag);
-            if(setFlag && stack.size() >= 2 && !(compOpFlag || numericOpFlag)){                                                                  
+            
+			if(setFlag && stack.size() >= 2 && !(compOpFlag || numericOpFlag)){                                                                  
                 doSetOperation();
                 setFlag = false;                
             }
@@ -438,5 +439,16 @@ class SymbolTable {
             }            
             counter++;                                      
         }
+		if(printFlag && stack.size() >= 1){                
+            printToConsole();                
+        }   
+        if(setFlag && stack.size() >= 2){
+            doSetOperation();
+            setFlag = false;   
+        }       
+        // System.out.println("Stack --> " + stack.toString());
+        // System.out.println("Symbol Table --> " + symbolTable.toString());
+        // System.out.println("Symbol Table Global --> " + symbolTableGlobal.toString());
+			
     }
 }
