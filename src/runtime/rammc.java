@@ -3,48 +3,20 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class rammc {
+public class ramm {
 
-	public static void main(String args[]){				        
+    public static void main(String args[]){                     
         // List<Token> tokens = new Tokens(args[0]).getTokens();
         // for(Token t:tokens){
         //     System.out.println(t.type.toString());
         // }
         run(args[0]);        
-	}
+    }
 
     private static void run(String filename){
         SymbolTable st = new SymbolTable(new Tokens(filename).getTokens()); 
     }
 
-}
-
-enum TokenType {
-    BLOCKSTART("\\{")                   , 
-    BLOCKEND("\\}")                     ,
-    COMMA(",")                          ,
-    STRING("\"(\\.|[^\"])*\"")          ,    
-    NUMBER ("(\\+|-)?\\d+(\\.\\d+)?")   ,
-    BOOLEAN ( "TRUE|FALSE")             ,
-    PROC ("PROC")                       ,
-    PROCLOAD ("LOAD")                   ,
-    PREDEFINEDIDENT("[A-Z][A-Z]*")      ,    
-    IDENTIFIER ( "[a-z_][A-Za-z0-9]*")  ;
-
-    public final String pattern;
-    private TokenType(String pattern){
-        this.pattern = pattern;
-    }
-}
-
-class Token {
-    TokenType type;
-    String stringValue;
-
-    public Token(TokenType type, String token) {
-        this.type = type;
-        this.stringValue = token;
-    }
 }
 
 class Tokens {
@@ -69,8 +41,8 @@ class Tokens {
             e.printStackTrace();
         }
     }
-	
-	private void tokenize(String line){
+
+    private void tokenize(String line){
         matcher = pttrn.matcher(line);
         while (matcher.find()) {            
             String tokenValue;
@@ -85,7 +57,36 @@ class Tokens {
 
     public List<Token> getTokens(){
         return this.tokens;
-    }  
+    }    
+
+}
+
+class Token {
+    TokenType type;
+    String stringValue;
+
+    public Token(TokenType type, String token) {
+        this.type = type;
+        this.stringValue = token;
+    }
+}
+
+enum TokenType {
+    BLOCKSTART("\\{")                   , 
+    BLOCKEND("\\}")                     ,
+    COMMA(",")                          ,
+    STRING("\"(\\.|[^\"])*\"")          ,    
+    NUMBER ("(\\+|-)?\\d+(\\.\\d+)?")   ,
+    BOOLEAN ( "TRUE|FALSE")             ,
+    PROC ("PROC")                       ,
+    PROCLOAD ("LOAD")                   ,
+    PREDEFINEDIDENT("[A-Z][A-Z]*")      ,    
+    IDENTIFIER ( "[a-z_][A-Za-z0-9]*")  ;
+
+    public final String pattern;
+    private TokenType(String pattern){
+        this.pattern = pattern;
+    }
 }
 
 class Symbol {        
@@ -111,7 +112,7 @@ class Symbol {
     // public void setSymbolValue(String symbolValue){
     //     this.symbolValue = symbolValue;
     // } 
-
+    
     public String getSymbolValue(){
         return this.symbolValue;
     }
@@ -122,9 +123,9 @@ class Symbol {
 
     public int getScopeValue(){
         return this.symbolScope;
-    }
+    }    
 
-	@Override
+    @Override
     public String toString() {
         return "Scope : " + this.symbolScope + " -> Value : " + this.symbolValue + " | " + " -> Value : " + this.symbolValueList;
     }
@@ -195,8 +196,8 @@ class SymbolTable {
         this.init(tokens);
     }
 
-    private void init(List<Token> tokens){	        
-		int counter = 0;
+    private void init(List<Token> tokens){
+        int counter = 0;
         symbolTableGlobal.push(symbolTable);
         for(int i=0; i<tokens.size(); i++){
             // Token t: tokens
@@ -377,8 +378,7 @@ class SymbolTable {
             // System.out.println("Symbol Table --> " + symbolTable.toString());
             // System.out.println("Symbol Table Global --> " + symbolTableGlobal.toString());
             // System.out.println(printFlag);
-            
-			if(setFlag && stack.size() >= 2 && !(compOpFlag || numericOpFlag)){                                                                  
+            if(setFlag && stack.size() >= 2 && !(compOpFlag || numericOpFlag)){                                                                  
                 doSetOperation();
                 setFlag = false;                
             }
@@ -439,7 +439,7 @@ class SymbolTable {
             }            
             counter++;                                      
         }
-		if(printFlag && stack.size() >= 1){                
+        if(printFlag && stack.size() >= 1){                
             printToConsole();                
         }   
         if(setFlag && stack.size() >= 2){
@@ -449,7 +449,6 @@ class SymbolTable {
         // System.out.println("Stack --> " + stack.toString());
         // System.out.println("Symbol Table --> " + symbolTable.toString());
         // System.out.println("Symbol Table Global --> " + symbolTableGlobal.toString());
-			
     }
 
     private void insert(String symbolName, Symbol symbol){                    
@@ -458,6 +457,29 @@ class SymbolTable {
 
     private void insertScoped(HashMap<String, Symbol> scopedSymbolTable, String symbolName, Symbol symbol){
         scopedSymbolTable.put(symbolName,symbol);
+    }
+
+    private void setReturnValue(){
+        String toReturn = "";
+        String stackTop = stack.pop();
+        boolean symbolFound = false;                         
+        for(HashMap<String, Symbol> tempSymbolTable : symbolTableGlobal){                                
+            Symbol findSymbol = tempSymbolTable.get(stackTop);                
+            if(findSymbol != null){
+                toReturn = findSymbol.getSymbolValue();
+                symbolFound = true;
+                break;        
+            }
+        }
+        if(!symbolFound){
+            toReturn = stackTop;            
+        }
+        toReturnValue = toReturn;
+        returnFlag = false;
+    }
+
+    public String getReturnValue(){
+        return toReturnValue;
     }
 
     private void inputReader(){
@@ -494,31 +516,8 @@ class SymbolTable {
                 printFlag = false;
         }
     }
-	
-	private void setReturnValue(){
-        String toReturn = "";
-        String stackTop = stack.pop();
-        boolean symbolFound = false;                         
-        for(HashMap<String, Symbol> tempSymbolTable : symbolTableGlobal){                                
-            Symbol findSymbol = tempSymbolTable.get(stackTop);                
-            if(findSymbol != null){
-                toReturn = findSymbol.getSymbolValue();
-                symbolFound = true;
-                break;        
-            }
-        }
-        if(!symbolFound){
-            toReturn = stackTop;            
-        }
-        toReturnValue = toReturn;
-        returnFlag = false;
-    }
 
-    public String getReturnValue(){
-        return toReturnValue;
-    }
-	
-	private void doSetOperation(){
+    private void doSetOperation(){
         // System.out.println("Stack --> " + stack.toString());
         // System.out.println("Symbol Table --> " + symbolTable.toString());            
         String value = stack.pop();
@@ -571,8 +570,56 @@ class SymbolTable {
             }
         }            
     }
-	
-	private void doCompOperation(){                          
+
+    private void doNumericOperation(){       
+        // System.out.println("Stack --> " + stack.toString());
+        // System.out.println("Symbol Table --> " + symbolTable.toString());             
+        float result = 0;
+        int count = 0;
+        String value = stack.pop();        
+        boolean symbolFound = false;                        
+        for(HashMap<String, Symbol> tempSymbolTable : symbolTableGlobal){                                
+            Symbol findSymbol = tempSymbolTable.get(value);                
+            if(findSymbol != null){
+                parameterList.add(findSymbol.getSymbolValue());
+                symbolFound = true;
+                break;        
+            }
+        }
+        if(!symbolFound){
+            parameterList.add(value);
+        }                                    
+        for(String s:parameterList){
+            if(count == 0){
+                result = Float.parseFloat(s);
+                count++;
+                continue;
+            }
+            switch(numericOpCode){
+                case 1:
+                    result = result + Float.parseFloat(s);
+                    break;
+                case 2:
+                    result = result - Float.parseFloat(s);
+                    break;
+                case 3:
+                    result = result * Float.parseFloat(s);
+                    break;
+                case 4:
+                    result = result / Float.parseFloat(s);
+                    break;
+                case 5:
+                    result = result % Float.parseFloat(s);
+                    break;
+            }            
+            count++;            
+        }
+        stack.push(Float.toString(result));        
+        numericOpFlag = false;
+        parameterList.clear();
+    }
+
+    private void doCompOperation(){                          
         // System.out.println("Stack --> " + stack.toString());
         // System.out.println("Symbol Table --> " + symbolTable.toString());
         // System.out.println("Symbol Table Global --> " + symbolTableGlobal.toString());
@@ -688,5 +735,101 @@ class SymbolTable {
             }            
         }     
     }
+
+    private static boolean isNumeric(String str)  
+    {  
+      try  
+      {  
+        Float d = Float.parseFloat(str);  
+      }  
+      catch(NumberFormatException nfe)  
+      {  
+        return false;  
+      }  
+      return true;  
+    }
+
+    private void predefinedident(String value){                
+        switch(value){
+            case "SET":
+                setFlag = true;
+                break;
+            case "INPUT":
+                inputReader();
+                break;
+            case "PRINT":                
+                printFlag = true;
+                break;
+            case "ADD":    
+                numericOpCode = 1;
+                numericOpFlag = true;
+                break;
+            case "SUB":                
+                numericOpCode = 2;
+                numericOpFlag = true;
+                break;
+            case "MUL":                
+                numericOpCode = 3;
+                numericOpFlag = true;
+                break;
+            case "DIV":                
+                numericOpCode = 4;
+                numericOpFlag = true;
+                break;
+            case "MOD":
+                numericOpCode = 5;
+                numericOpFlag = true;
+                break;
+            case "LT":
+                compOpCode = 1;
+                compOpFlag = true;
+                break;
+            case "GT":
+                compOpCode = 2;
+                compOpFlag = true;
+                break;
+            case "GE":
+                compOpCode = 3;
+                compOpFlag = true;
+                break;
+            case "LE":
+                compOpCode = 4;
+                compOpFlag = true;
+                break;
+            case "E":
+                compOpCode = 5;
+                compOpFlag = true;
+                break;
+            case "NE":
+                compOpCode = 6;
+                compOpFlag = true; 
+                break;
+            case "CHECK":
+                checkConditionFlag = true;
+                break;            
+            case "RETURN":
+                returnFlag = true;
+                break;
+        }
+    }
+
+    // private List<Token> deserializeListString(String listString){
+    //     List<Token> tokens = new ArrayList<Token>();
+    //     String listStringSub = listString.substring(0, listString.length - 1); // chop off brackets
+    //     for (String token : new StringTokenizer(listStringSub, ",")) {
+    //         tokens.add(token.trim);
+    //     }
+    //     System.out.println(tokens.toString());
+    //     return tokens;
+    // }
+
+    // @Override
+    // public String toString() { 
+    //     String symbolTableString = "";       
+    //     for (Map.Entry<String, Symbol> entry : symbolTable.entrySet()) {
+    //        symbolTableString += "Symbol Name = " + entry.getKey() + ", Symbol Value = " + entry.getValue() + "\n";
+    //     }   
+    //     return symbolTableString; 
+    // }
 
 }
