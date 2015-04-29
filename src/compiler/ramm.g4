@@ -32,6 +32,38 @@ functionCall
  | Size '(' expression ')'      #sizeFunctionCall
  ;
 
+ expression
+ : '-' expression                           #unaryMinusExpression
+ | '!' expression                           #notExpression
+ | expression '^' expression                #powerExpression
+ | expression '*' expression                #multiplyExpression
+ | expression '/' expression                #divideExpression
+ | expression '%' expression                #modulusExpression
+ | expression '+' expression                #addExpression
+ | 'return' expression			            #returnExpression
+ | expression '-' expression                #subtractExpression
+ | expression '>=' expression               #gtEqExpression
+ | expression '<=' expression               #ltEqExpression
+ | expression '>' expression                #gtExpression
+ | expression '<' expression                #ltExpression
+ | expression '==' expression               #eqExpression
+ | expression '!=' expression               #notEqExpression
+ | expression '&&' expression               #andExpression
+ | expression '||' expression               #orExpression
+ | expression '?' expression ':' expression #ternaryExpression
+ | expression In expression                 #inExpression
+ | Number                                   #numberExpression
+ | Bool                                     #boolExpression
+ | Null                                     #nullExpression
+ | functionCall indexes?                    #functionCallExpression
+ | list indexes?                            #listExpression
+ | Identifier indexes?                      #identifierExpression
+ | String indexes?                          #stringExpression
+ | '(' expression ')' indexes?              #expressionExpression
+ | Input '(' String? ')'                    #inputExpression
+ ;
+
+
 
 Println  : 'println';
 Print    : 'print';
