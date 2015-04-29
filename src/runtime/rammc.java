@@ -459,4 +459,39 @@ class SymbolTable {
     private void insertScoped(HashMap<String, Symbol> scopedSymbolTable, String symbolName, Symbol symbol){
         scopedSymbolTable.put(symbolName,symbol);
     }
+
+    private void inputReader(){
+        String userInput;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            userInput = br.readLine();
+            stack.push(userInput);
+        } catch (IOException ioe) {
+            System.out.println("IO error!");        
+        }
+    }
+
+    private void printToConsole(){     
+        // System.out.println("Stack --> " + stack.toString()); 
+        // System.out.println("Symbol Table Global --> " + symbolTableGlobal.toString());          
+        if(!numericOpFlag && !compOpFlag){            
+            String toPrint = stack.pop();
+            boolean symbolFound = false;                         
+            for(HashMap<String, Symbol> tempSymbolTable : symbolTableGlobal){                                
+                Symbol findSymbol = tempSymbolTable.get(toPrint);                
+                if(findSymbol != null){
+                    System.out.println(findSymbol.getSymbolValue());                        
+                    symbolFound = true;
+                    break;        
+                }
+            }
+            if(!symbolFound){
+                System.out.println(toPrint);
+            }                                                
+            if(printFlag2)
+                printFlag = true;
+            else
+                printFlag = false;
+        }
+    }
 }
