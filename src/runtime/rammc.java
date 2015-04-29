@@ -494,4 +494,27 @@ class SymbolTable {
                 printFlag = false;
         }
     }
+	
+	private void setReturnValue(){
+        String toReturn = "";
+        String stackTop = stack.pop();
+        boolean symbolFound = false;                         
+        for(HashMap<String, Symbol> tempSymbolTable : symbolTableGlobal){                                
+            Symbol findSymbol = tempSymbolTable.get(stackTop);                
+            if(findSymbol != null){
+                toReturn = findSymbol.getSymbolValue();
+                symbolFound = true;
+                break;        
+            }
+        }
+        if(!symbolFound){
+            toReturn = stackTop;            
+        }
+        toReturnValue = toReturn;
+        returnFlag = false;
+    }
+
+    public String getReturnValue(){
+        return toReturnValue;
+    }
 }
