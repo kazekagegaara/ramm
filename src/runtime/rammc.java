@@ -451,4 +451,12 @@ class SymbolTable {
         // System.out.println("Symbol Table Global --> " + symbolTableGlobal.toString());
 			
     }
+
+    private void insert(String symbolName, Symbol symbol){                    
+        symbolTable.put(symbolName,symbol);
+    }
+
+    private void insertScoped(HashMap<String, Symbol> scopedSymbolTable, String symbolName, Symbol symbol){
+        scopedSymbolTable.put(symbolName,symbol);
+    }
 }
