@@ -9,7 +9,6 @@ public class rammCompiler{
 		rammParser parser = new rammParser(new CommonTokenStream(lexer));
 
 		ParseTree tree = parser.block();
-		System.out.println(tree.toStringTree(parser));
 		ParseTreeWalker walker = new ParseTreeWalker();
 
 		walker.walk(new rammWalker(), tree);
