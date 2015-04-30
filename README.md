@@ -7,7 +7,7 @@ This is the repository for SER 502 Project 2. The team members are
   - Mohit Kumar
   - Richa Mittal
 
-The language we made is called **RAMM** , after the first initials of each team member. The link to the youtube video is : http://www.example.com/
+The language we made is called **RAMM** , after the first initials of each team member. The link to the youtube video is : https://www.youtube.com/watch?v=TtS71GAofFo
 
 Following is the structure of the repository :
 
