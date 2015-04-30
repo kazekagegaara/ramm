@@ -1,4 +1,2 @@
-def HelloWorld (a)
-	a = "Hello World"
-	print (a)
-end
+a = "Hello World"
+print (a)
