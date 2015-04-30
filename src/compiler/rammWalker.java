@@ -78,6 +78,74 @@ public class rammWalker extends rammBaseListener {
 
 	}
 
+	
+
+	public void enterAssertFunctionCall(rammParser.AssertFunctionCallContext ctx) {}
+
+	public void enterSizeFunctionCall(rammParser.SizeFunctionCallContext ctx) {}
+
+	public void enterIdList(rammParser.IdListContext ctx) {
+				//System.out.println("Entering idlist");
+
+		if (ctx.Identifier().size() > 1) {
+
+			Iterator < TerminalNode > itr = ctx.Identifier().iterator();
+			String prefix = "";
+			while (itr.hasNext()) {
+				sb.append(prefix);
+				prefix = ",";
+				sb.append(itr.next().getText().toLowerCase());
+			}
+		} else if (ctx.Identifier().size() == 1) {
+			sb.append(ctx.Identifier(0).getText().toLowerCase()+" ");
+
+		}
+
+	}
+
+	public void exitIdList(rammParser.IdListContext ctx) {
+				//System.out.println("Exiting id list");
+
+		sb.append("\r\n{\r\n");
+
+	}
+
+	public void enterGtExpression(rammParser.GtExpressionContext ctx) {
+				//System.out.println("Entering GT expression");
+
+		sb.append("GT ");
+			Iterator < rammParser.ExpressionContext > itr = ctx.expression().iterator();
+			
+	 }
+
+	 public void enterLtExpression(rammParser.LtExpressionContext ctx) { 
+	 			//System.out.println("Entering LT expression");
+
+			sb.append("LT ");
+			
+	 }
+
+
+	 
+
+	public void enterIfStatement(rammParser.IfStatementContext ctx) {
+	//System.out.println("Entering if statement");
+
+	}
+
+	public void exitIfStatement(rammParser.IfStatementContext ctx) {
+		//System.out.println("Exiting if statement");
+		sb.append("}\r\n");
+
+	}
+
+	public void enterIfStat(rammParser.IfStatContext ctx) {
+		//System.out.println("Entering if stat");
+		sb.append("\r\nCHECK ");
+
+	}
+
+
 	public void enterIdentifierExpression(rammParser.IdentifierExpressionContext ctx) {
 		System.out.println("Entering Identifier Expression");
 		String x =ctx.getText();
