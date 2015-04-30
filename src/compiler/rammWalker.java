@@ -215,20 +215,147 @@ public class rammWalker extends rammBaseListener {
 
 	}
 
-
-	public void enterReturnExpression(rammParser.ReturnExpressionContext ctx) {
-		sb.append("RETURN ");
-	}
-
-
-	public void exitReturnExpression(rammParser.ReturnExpressionContext ctx) {}
-	public void enterExprList(rammParser.ExprListContext ctx) {
+	public void enterSubtractExpression(rammParser.SubtractExpressionContext ctx) {
+		sb.append("SUB ");
 
 	}
 
-	public void enterDivideExpression(rammParser.DivideExpressionContext ctx) {
 
-
-		sb.append("DIV ");
+	public void enterMultiplyExpression(rammParser.MultiplyExpressionContext ctx) {
+		sb.append("MUL ");
 
 	}
+
+
+	public void exitStatement(rammParser.StatementContext ctx) {}
+
+	public void exitAssignment(rammParser.AssignmentContext ctx) {}
+
+	public void exitIdentifierFunctionCall(rammParser.IdentifierFunctionCallContext ctx) {}
+
+	public void exitPrintlnFunctionCall(rammParser.PrintlnFunctionCallContext ctx) {}
+
+	public void exitPrintFunctionCall(rammParser.PrintFunctionCallContext ctx) {}
+
+	public void exitAssertFunctionCall(rammParser.AssertFunctionCallContext ctx) {}
+
+	public void exitSizeFunctionCall(rammParser.SizeFunctionCallContext ctx) {}
+
+
+	public void exitIfStat(rammParser.IfStatContext ctx) {}
+
+	public void exitElseIfStat(rammParser.ElseIfStatContext ctx) {}
+
+	public void exitElseStat(rammParser.ElseStatContext ctx) {
+
+	}
+
+
+	public void exitForStatement(rammParser.ForStatementContext ctx) {
+
+	}
+
+	public void exitWhileStatement(rammParser.WhileStatementContext ctx) {
+
+		sb.append("}\r\n");
+	}
+
+
+	public void exitExprList(rammParser.ExprListContext ctx) {
+
+	}
+
+	public void exitGtExpression(rammParser.GtExpressionContext ctx) {
+
+		sb.append("\r\nTRUE {\r\n");
+	}
+	public void enterNumberExpression(rammParser.NumberExpressionContext ctx) {
+
+
+		sb.append(ctx.getText() + " ");
+
+	}
+	public void exitNumberExpression(rammParser.NumberExpressionContext ctx) {}
+
+	public void exitIdentifierExpression(rammParser.IdentifierExpressionContext ctx) {}
+
+	public void exitModulusExpression(rammParser.ModulusExpressionContext ctx) {}
+	public void enterNotExpression(rammParser.NotExpressionContext ctx) {}
+	public void exitNotExpression(rammParser.NotExpressionContext ctx) {}
+
+	public void exitMultiplyExpression(rammParser.MultiplyExpressionContext ctx) {}
+
+
+
+	public void exitGtEqExpression(rammParser.GtEqExpressionContext ctx) {
+		sb.append("\r\nTRUE {\r\n");
+	}
+	public void enterAndExpression(rammParser.AndExpressionContext ctx) {}
+	public void exitAndExpression(rammParser.AndExpressionContext ctx) {}
+	public void enterStringExpression(rammParser.StringExpressionContext ctx) {
+		sb.append(ctx.getText()+ " ");
+	}
+	public void exitStringExpression(rammParser.StringExpressionContext ctx) {}
+
+	public void exitExpressionExpression(rammParser.ExpressionExpressionContext ctx) {}
+	public void enterNullExpression(rammParser.NullExpressionContext ctx) {}
+	public void exitNullExpression(rammParser.NullExpressionContext ctx) {}
+	public void enterFunctionCallExpression(rammParser.FunctionCallExpressionContext ctx) {}
+	public void exitFunctionCallExpression(rammParser.FunctionCallExpressionContext ctx) {}
+	public void enterListExpression(rammParser.ListExpressionContext ctx) {}
+	public void exitListExpression(rammParser.ListExpressionContext ctx) {}
+
+	public void exitLtEqExpression(rammParser.LtEqExpressionContext ctx) {
+		sb.append("\r\nTRUE {\r\n");
+	}
+
+	public void exitLtExpression(rammParser.LtExpressionContext ctx) {
+		sb.append("\r\nTRUE {\r\n");
+	}
+	public void enterBoolExpression(rammParser.BoolExpressionContext ctx) {
+		sb.append(ctx.getText().toUpperCase() + "\r\n");
+	}
+	public void exitBoolExpression(rammParser.BoolExpressionContext ctx) {}
+
+	public void exitNotEqExpression(rammParser.NotEqExpressionContext ctx) {
+		sb.append("\r\nTRUE {\r\n");
+	}
+
+	public void exitDivideExpression(rammParser.DivideExpressionContext ctx) {}
+
+	public void exitOrExpression(rammParser.OrExpressionContext ctx) {}
+	public void enterUnaryMinusExpression(rammParser.UnaryMinusExpressionContext ctx) {}
+	public void exitUnaryMinusExpression(rammParser.UnaryMinusExpressionContext ctx) {
+
+	}
+
+	public void exitPowerExpression(rammParser.PowerExpressionContext ctx) {}
+
+
+	public void exitEqExpression(rammParser.EqExpressionContext ctx) {
+		sb.append("\r\nTRUE {\r\n");
+	}
+	public void enterInExpression(rammParser.InExpressionContext ctx) {}
+	public void exitInExpression(rammParser.InExpressionContext ctx) {}
+
+	public void exitAddExpression(rammParser.AddExpressionContext ctx) {}
+
+	public void exitSubtractExpression(rammParser.SubtractExpressionContext ctx) {}
+	public void enterTernaryExpression(rammParser.TernaryExpressionContext ctx) {}
+	public void exitTernaryExpression(rammParser.TernaryExpressionContext ctx) {}
+	public void enterInputExpression(rammParser.InputExpressionContext ctx) {
+
+	}
+	public void exitInputExpression(rammParser.InputExpressionContext ctx) {}
+	public void enterList(rammParser.ListContext ctx) {
+
+	}
+	public void exitList(rammParser.ListContext ctx) {}
+
+	public void enterIndexes(rammParser.IndexesContext ctx) {}
+
+	public void exitIndexes(rammParser.IndexesContext ctx) {
+
+	}
+
+}
