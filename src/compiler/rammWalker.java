@@ -329,20 +329,8 @@ public class rammWalker extends rammBaseListener {
 
 	}
 
-	public void exitPowerExpression(rammParser.PowerExpressionContext ctx) {}
-
-
-	public void exitEqExpression(rammParser.EqExpressionContext ctx) {
-		sb.append("\r\nTRUE {\r\n");
-	}
-	public void enterInExpression(rammParser.InExpressionContext ctx) {}
-	public void exitInExpression(rammParser.InExpressionContext ctx) {}
-
 	public void exitAddExpression(rammParser.AddExpressionContext ctx) {}
 
-	public void exitSubtractExpression(rammParser.SubtractExpressionContext ctx) {}
-	public void enterTernaryExpression(rammParser.TernaryExpressionContext ctx) {}
-	public void exitTernaryExpression(rammParser.TernaryExpressionContext ctx) {}
 	public void enterInputExpression(rammParser.InputExpressionContext ctx) {
 
 	}
