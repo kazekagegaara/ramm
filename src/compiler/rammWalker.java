@@ -214,3 +214,21 @@ public class rammWalker extends rammBaseListener {
 	public void enterExpressionExpression(rammParser.ExpressionExpressionContext ctx) {
 
 	}
+
+
+	public void enterReturnExpression(rammParser.ReturnExpressionContext ctx) {
+		sb.append("RETURN ");
+	}
+
+
+	public void exitReturnExpression(rammParser.ReturnExpressionContext ctx) {}
+	public void enterExprList(rammParser.ExprListContext ctx) {
+
+	}
+
+	public void enterDivideExpression(rammParser.DivideExpressionContext ctx) {
+
+
+		sb.append("DIV ");
+
+	}
