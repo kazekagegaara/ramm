@@ -1,0 +1,24 @@
+<project name="ramm" default="build" basedir=".">
+   <target name="init">
+      <property name="compilerSourceDir" value="src/compiler" />
+      <property name="runtimeSourceDir" value="src/runtime" />
+      <property name="lib-dir" value="lib"/>
+      <property name="outputDir" value="build" />  
+      <path id="classpath">
+        <fileset dir="${lib-dir}" includes="**/*.jar"/>
+      </path>    
+   </target>
+   <target name="clean" depends="init">
+      <delete dir="${outputDir}" />
+   </target>
+   <target name="prepare" depends="clean">
+      <mkdir dir="${outputDir}" />
+   </target>
+   <path id="master-classpath">    
+    <pathelement path="${compilerSourceDir}"/>
+  </path>
+   <target name="compile" depends="prepare">
+   	<javac srcdir="${compilerSourceDir}" destdir="${outputDir}" classpathref="classpath" includeantruntime="false" />     
+     <javac srcdir="${runtimeSourceDir}" destdir="${outputDir}" />
+   </target>   
+</project>

@@ -37,9 +37,19 @@ $ ant compile
 ### Run
 You can choose to build the source code again, or you can directly use the build folder. To run, please execute the following commands :
 
+#### OSX/Unix/Linux users
+
 ```sh
-$ java build/rammc fileToExecute.ramm
-$ java build/Ramm generatedFile.rammc
+$ java -cp "lib/*:build" rammCompiler fileToExecute.ramm
+$ java -cp build Ramm generatedFile.rammc
+```
+where fileToExecute.ramm is the source file, and generatedFile.rammc is the generated intermediate code.
+
+#### Windows users
+
+```sh
+$ java -cp "lib/*;build" rammCompiler fileToExecute.ramm
+$ java -cp build Ramm generatedFile.rammc
 ```
 where fileToExecute.ramm is the source file, and generatedFile.rammc is the generated intermediate code.
 
