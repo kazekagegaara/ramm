@@ -157,3 +157,60 @@ public class rammWalker extends rammBaseListener {
 		}
 
 	}
+
+	public void enterReturnExpression(rammParser.ReturnExpressionContext ctx) {
+		sb.append("RETURN ");
+	}
+
+
+	public void exitReturnExpression(rammParser.ReturnExpressionContext ctx) {}
+	public void enterExprList(rammParser.ExprListContext ctx) {
+
+	}
+
+	public void enterDivideExpression(rammParser.DivideExpressionContext ctx) {
+
+
+		sb.append("DIV ");
+
+	}
+
+	public void enterModulusExpression(rammParser.ModulusExpressionContext ctx) {
+		sb.append("MOD ");
+	}
+
+	public void enterEqExpression(rammParser.EqExpressionContext ctx) {
+
+		sb.append("E ");
+
+	}
+
+	public void enterGtEqExpression(rammParser.GtEqExpressionContext ctx) {
+
+		sb.append("GE ");
+
+
+	}
+
+	public void enterNotEqExpression(rammParser.NotEqExpressionContext ctx) {
+		sb.append("NE ");
+
+	}
+
+	public void enterLtEqExpression(rammParser.LtEqExpressionContext ctx) {
+		sb.append("LE ");
+
+	}
+
+	public void enterAddExpression(rammParser.AddExpressionContext ctx) {
+		sb.append("ADD ");
+
+	}
+
+	public void enterOrExpression(rammParser.OrExpressionContext ctx) {}
+
+	public void enterPowerExpression(rammParser.PowerExpressionContext ctx) {}
+
+	public void enterExpressionExpression(rammParser.ExpressionExpressionContext ctx) {
+
+	}
