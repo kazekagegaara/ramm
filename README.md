@@ -27,7 +27,7 @@ Following is the structure of the repository :
 # Installation
 
 ### Build
-We assume the system already has ant installed. If not, please skip the build part :
+We assume the system already has ant installed. If not, please skip the build part. These commands should be executed at the root level of this repository.
 
 ```sh
 $ ant init
@@ -35,7 +35,7 @@ $ ant compile
 ```
 
 ### Run
-You can choose to build the source code again, or you can directly use the build folder. To run, please execute the following commands :
+You can choose to build the source code again, or you can directly use the build folder. To run, please execute the following commands from the root level of this repository. The source file should also be at the root level. 
 
 #### OSX/Unix/Linux users
 
