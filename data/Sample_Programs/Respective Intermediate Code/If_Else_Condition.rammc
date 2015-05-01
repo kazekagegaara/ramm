@@ -1,6 +1,7 @@
 SET a 10 SET b 5 
-CHECK GT a , b 
+CHECK GT a,b 
 TRUE {
 PRINT "A is greater" }
 FALSE {
 PRINT "B is greater" }
+

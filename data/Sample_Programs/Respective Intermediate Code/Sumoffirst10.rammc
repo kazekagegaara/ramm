@@ -1,4 +1,4 @@
-SET num 0 LOOP LT num , 11 
+SET num 0 SET x 0 LOOP LT num,11 
 TRUE {
-SET num ADD num , 1 }
-PRINT num
+SET x ADD x,num SET num ADD num,1 }
+PRINT num 

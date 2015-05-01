@@ -1,3 +1,1 @@
-SET a 12 
-SET b 6 
-PRINT MOD a,b
+SET a 12 SET b 6 PRINT MOD a,b 

@@ -1,3 +1,5 @@
+SET a 10 SET b 5 
 CHECK E a,b 
 TRUE {
 PRINT a }
+

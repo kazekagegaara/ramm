@@ -1,5 +1,7 @@
 num = 0
+x=0
 while num<11 do
+x = x+num
 num = num + 1
 end
 

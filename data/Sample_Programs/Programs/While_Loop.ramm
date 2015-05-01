@@ -3,4 +3,4 @@ while num<11 do
 num = num + 1
 end
 
-print (num)
+print (num)   // 11 expected as answer

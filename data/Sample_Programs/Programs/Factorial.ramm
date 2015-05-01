@@ -5,3 +5,5 @@ def FACTORIAL(number)
 		return number*FACTORIAL(number-1)
 	end
 end
+
+print (FACTORIAL(5))

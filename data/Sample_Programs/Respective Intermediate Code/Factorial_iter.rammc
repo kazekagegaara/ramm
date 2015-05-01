@@ -1,8 +1,0 @@
-PROC factorial number 
-{
-CHECK E number,0 
-TRUE {
-RETURN 1 }
-FALSE {
-RETURN MUL number,LOAD factorial SUB number,1 }
-}
