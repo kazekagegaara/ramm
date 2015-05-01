@@ -6,15 +6,18 @@ import java.io.*;
 public class rammWalker extends rammBaseListener {
 
 	public StringBuilder sb = new StringBuilder();
-
-
+	String filename;
+	rammWalker(String x)
+	{
+		this.filename = x;
+	}
 	public void enterBlock(rammParser.BlockContext ctx) {}
 
 	public void exitBlock(rammParser.BlockContext ctx) {
 
 		String str = sb.toString();
 		try {
-			PrintWriter writer = new PrintWriter("intermediate.rammc", "UTF-8");
+			PrintWriter writer = new PrintWriter(filename+".rammc", "UTF-8");
 			writer.println(sb);
 			writer.close();
 		} catch (FileNotFoundException f) {
