@@ -3,6 +3,16 @@ import java.util.*;
 import org.antlr.v4.runtime.tree.*;
 import java.io.*;
 
+/**
+ * Ramm Walker class is required to walk through the tree and generate the intermediate code which is passed to the VM. It has been called in RammCompiler.java class.
+ * @author Aditya Narasimhamurthy
+ * @author Manit Singh Kalsi
+ * @author Mohit Kumar
+ * @author Richa Mittal
+ */
+
+
+
 public class rammWalker extends rammBaseListener {
 
 	public StringBuilder sb = new StringBuilder();
