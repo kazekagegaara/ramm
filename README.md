@@ -2,9 +2,9 @@
 
 This is the repository for SER 502 Project 2. The team members are
 
-  - Aditya Narasimamurthy
-  - Manit Singh Kalsi
-  - Mohit Kumar
+  - Aditya Narasimamurthy - https://github.com/ads692
+  - Manit Singh Kalsi - https://github.com/kazekagegaara
+  - Mohit Kumar - https://github.com/mohitkk
   - Richa Mittal
 
 The language we made is called **RAMM** , after the first initials of each team member. The link to the youtube video is : https://www.youtube.com/watch?v=TtS71GAofFo
